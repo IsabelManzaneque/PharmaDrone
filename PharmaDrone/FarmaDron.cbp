@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="FarmaDron" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/FarmaDron" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add library="glfw3" />
+					<Add library="gdi32" />
+					<Add library="opengl32" />
+					<Add directory="lib-mingw-w64" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/FarmaDron" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add directory="../../../../../Program Files/CodeBlocks/MinGW/include" />
+		</Compiler>
+		<Unit filename="include/Calendar.h" />
+		<Unit filename="include/Drone.h" />
+		<Unit filename="include/ExceptionManager.h" />
+		<Unit filename="include/Location.h" />
+		<Unit filename="include/Medicine.h" />
+		<Unit filename="include/Order.h" />
+		<Unit filename="include/Patient.h" />
+		<Unit filename="include/Route.h" />
+		<Unit filename="include/SysManager.h" />
+		<Unit filename="include/Warehouse.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="src/Calendar.cpp" />
+		<Unit filename="src/Drone.cpp" />
+		<Unit filename="src/ExceptionManager.cpp" />
+		<Unit filename="src/Location.cpp" />
+		<Unit filename="src/Medicine.cpp" />
+		<Unit filename="src/Order.cpp" />
+		<Unit filename="src/Patient.cpp" />
+		<Unit filename="src/Route.cpp" />
+		<Unit filename="src/SysManager.cpp" />
+		<Unit filename="src/Warehouse.cpp" />
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
