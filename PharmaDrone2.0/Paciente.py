@@ -11,15 +11,14 @@ class Paciente:
         self.nombre = nombre
         self.distancia = distancia
         self.angulo = angulo
-        self.pedidos = [] #pedidos del paciente
+        self.pedidos = [] # pedidos del paciente
         
     def addPedido(self, pedido):
         self.pedido.append(pedido)        
-            
-    def mostrarPedidos(self):
-        for pedido in self.pedidos:
-            pedido.mostrarInfo()
         
+    def getPedidos(self):
+        return self.pedidos
+            
     def mostrarInfo(self):
         print(f'Paciente {self.idPaciente}:\n - Nombre: {self.nombre}\n - Distancia: {self.distancia}\n - Angulo: {self.angulo}')
 

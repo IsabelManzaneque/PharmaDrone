@@ -21,18 +21,20 @@ class Almacen:
     def addPedido(self, pedido):
         self.pedido.append(pedido)
         
-    def mostrarPacientes(self):
-        for paciente in self.pacientes:
-            paciente.mostrarInfo()
-            
-    def mostrarPedidos(self):
-        for pedido in self.pedidos:
-            pedido.mostrarInfo()
+    def getId(self):
+        return self.idAlmacen
+    
+    def getPacientes(self):
+        return self.pacientes
+    
+    def getPedidos(self):
+        return self.pedidos
+    
     
     def mostrarInfo(self):
         print(f'\nAlmacen {self.idAlmacen}:\n - Calle: {self.direccion}\n - Municipio: {self.municipio}\n - Provincia: {self.provincia}\n - Descripccion: {self.descripcion}')
         
 
-#almacen1 = Almacen(11, "villanueva 14", "Leganes", "Madrid", "Entrada sur")
+
 
 
