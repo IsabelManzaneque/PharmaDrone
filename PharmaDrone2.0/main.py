@@ -16,10 +16,14 @@ patientCounter = 0
 def insertarDatos():
     """ Inserta los datos de 3 almacenes """
     
+    global patientCounter
+        
     almacenes[1] = Almacen(1, "Villanueva 14", "Zarzaquemada", "Madrid", "Entrada sur")
     almacenes[3] = Almacen(3, "3 Tintern Street", "Clapham", "London", "Almacen de Reino Unido")
     almacenes[5] = Almacen(5, "Chile 17", "Leganes", "Madrid", "Entrada norte") 
     
+    patientCounter += 1
+    almacenes[1].addPaciente(Paciente(patientCounter, "Isabel", 3000, 45))
     
 def altaAlmacen():
     """
@@ -84,12 +88,12 @@ def displayAlmacenes():
             almacen.mostrarInfo()
             
             if len(almacen.getPacientes()) > 0:
-                print(f"\nPacientes asociados a almacen {almacen.getId()}")                
+                print(f"\nPacientes asociados a almacen {almacen.getId()}:")                
                 for paciente in almacen.getPacientes():
                     paciente.mostrarInfo()
                     
             if len(almacen.getPedidos()) > 0:
-                print(f"\nPedidos asociados a almacen {almacen.getId()}")                
+                print(f"\nPedidos asociados a almacen {almacen.getId()}:")                
                 for pedido in almacen.getPedidos():
                     pedido.mostrarInfo()
     
@@ -135,7 +139,20 @@ def altaPaciente():
 def displayPacientes():
     """ Muestra la informacion de de los pacientes dados de alta en un almacen"""
     
+    print("\n---------- Informacion pacientes ----------")  
+    while True:
+        try:
+            idAlmacen = int(input("\nIdentificador de almacen (1 - 5): "))
+            if idAlmacen not in range(1,6) or almacenes[idAlmacen] == None:
+                print("Ese almacen no existe, intentelo de nuevo")
+                continue        
+            break
+        except ValueError:
+            print("Introduce un numero del 1 al 5")
     
+    for paciente in almacenes[idAlmacen].getPacientes():
+        paciente.mostrarInfo()
+            
   
 funDict = {
     
