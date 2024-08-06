@@ -5,6 +5,8 @@ Created on Tue Jul 16 09:31:42 2024
 @author: Isabe
 """
 
+from Dron import Dron
+
 class Almacen:
     def __init__(self, idAlmacen, direccion, municipio, provincia, descripcion):
         self.idAlmacen = idAlmacen
@@ -14,6 +16,7 @@ class Almacen:
         self.descripcion = descripcion 
         self.pacientes = {}
         self.pedidos = {} # pedidos del almacen
+        self.dron = Dron()
         
     def addPaciente(self, idPaciente, paciente):
         self.pacientes[idPaciente] = paciente
@@ -30,6 +33,8 @@ class Almacen:
     def getPedidos(self):
         return self.pedidos
     
+    def getDron(self):
+        return self.dron
     
     def mostrarInfo(self):
         print(f'\nAlmacen {self.idAlmacen}:\n - Calle: {self.direccion}\n - Municipio: {self.municipio}\n - Provincia: {self.provincia}\n - Descripccion: {self.descripcion}')
