@@ -12,14 +12,14 @@ class Almacen:
         self.municipio = municipio
         self.provincia = provincia
         self.descripcion = descripcion 
-        self.pacientes = []
-        self.pedidos = [] # pedidos del almacen
+        self.pacientes = {}
+        self.pedidos = {} # pedidos del almacen
         
-    def addPaciente(self, paciente):
-        self.pacientes.append(paciente)
+    def addPaciente(self, idPaciente, paciente):
+        self.pacientes[idPaciente] = paciente
     
-    def addPedido(self, pedido):
-        self.pedido.append(pedido)
+    def addPedido(self, idPedido, pedido):
+        self.pedidos[idPedido] = pedido       
         
     def getId(self):
         return self.idAlmacen

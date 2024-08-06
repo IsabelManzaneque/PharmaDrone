@@ -7,10 +7,13 @@ Created on Mon Jul 15 17:03:41 2024
 
 from Almacen import Almacen
 from Paciente import Paciente 
-
+from Pedido import Pedido
+from Farmaco import Farmaco
+import datetime
 
 almacenes = {i: None for i in range(1,6)}
 patientCounter = 0
+pedidoCounter = 0
 
 
 def insertarDatos():
@@ -23,7 +26,7 @@ def insertarDatos():
     almacenes[5] = Almacen(5, "Chile 17", "Leganes", "Madrid", "Entrada norte") 
     
     patientCounter += 1
-    almacenes[1].addPaciente(Paciente(patientCounter, "Isabel", 3000, 45))
+    almacenes[1].addPaciente(patientCounter, Paciente(patientCounter, "Isabel", 3000, 45))
     
 def altaAlmacen():
     """
@@ -87,16 +90,16 @@ def displayAlmacenes():
         if almacen is not None:
             almacen.mostrarInfo()
             
-            if len(almacen.getPacientes()) > 0:
+            if almacen.getPacientes():
                 print(f"\nPacientes asociados a almacen {almacen.getId()}:")                
-                for paciente in almacen.getPacientes():
+                for paciente in almacen.getPacientes().values():
                     paciente.mostrarInfo()
                     
-            if len(almacen.getPedidos()) > 0:
+            if almacen.getPedidos():
                 print(f"\nPedidos asociados a almacen {almacen.getId()}:")                
-                for pedido in almacen.getPedidos():
+                for pedido in almacen.getPedidos().values():
                     pedido.mostrarInfo()
-    
+                        
     
 def altaPaciente():
     """ Da de alta un nuevo paciente en un almacen """
@@ -117,7 +120,7 @@ def altaPaciente():
                     anguloPaciente = int(input("Angulo (entre 0 y 2000 milesimas de pi radianes): "))    
                     break
                 except ValueError:
-                    print("Error en la entrada, asegurese de estar introduciendo valores validos")
+                    print("Error en la entrada, introduzca valores validos")
                     
             answer = input("\nDatos correctos? (y/n): ")
             while answer not in ['y', 'n']:
@@ -126,7 +129,7 @@ def altaPaciente():
             if answer == 'y':            
                 patientCounter += 1
                 newPaciente = Paciente(patientCounter, nombrePaciente, distanciaPaciente, anguloPaciente)
-                almacenes[idAlmacen].addPaciente(newPaciente)            
+                almacenes[idAlmacen].addPaciente(patientCounter, newPaciente)            
                 break
             
         answer = input("Anadir otro paciente? (y/n): ")
@@ -150,10 +153,112 @@ def displayPacientes():
         except ValueError:
             print("Introduce un numero del 1 al 5")
     
-    for paciente in almacenes[idAlmacen].getPacientes():
+    for paciente in almacenes[idAlmacen].getPacientes().values():
         paciente.mostrarInfo()
             
-  
+
+def nuevoPedido():
+    """ Procesa un nuevo pedido para un cliente en un almacen """
+    
+    global pedidoCounter
+    
+    print("\n---------- Nuevo pedido ----------")  
+    while True:
+        try:
+            idAlmacen = int(input("\nIdentificador de almacen (1 - 5): "))
+            if idAlmacen not in range(1,6) or almacenes[idAlmacen] == None:
+                print("Ese almacen no existe, intentelo de nuevo")
+                continue        
+            break
+        except ValueError:
+            print("Introduce un numero del 1 al 5")
+        
+    for paciente in almacenes[idAlmacen].getPacientes().values():        
+        paciente.mostrarInfo()    
+       
+    while True:
+        try:
+            idPaciente = int(input("Seleccione un paciente del almacen: "))
+            if idPaciente not in almacenes[idAlmacen].getPacientes().keys():
+                print("No existe un paciente con el identificador seleccionado")
+                continue            
+            numEnvios = int(input("Seleccione numero de envios: "))
+            diaEnvio = int(input("Seleccione el dia del envio: "))
+            mesEnvio = int(input("Seleccione el mes del envio: "))
+            anioEnvio = int(input("Seleccione el anio del envio: "))
+            fecha = datetime.date(anioEnvio,mesEnvio,diaEnvio)
+            if fecha < datetime.datetime.today().date():
+                print("No tenemos maquinas del tiempo, introduzca una fecha futura.")
+                continue
+            break
+        except ValueError:
+            print("Error en la entrada, introduzca valores validos")
+        
+    pedidoCounter += 1
+    newPedido = Pedido(pedidoCounter, idPaciente, numEnvios, fecha)
+    
+    while True:
+        newFarmaco = nuevoFarmaco()
+        newPedido.addFarmaco(newFarmaco)                
+        answer = input("Anadir otro farmaco al pedido? (y/n): ")
+        
+        if answer not in ['y', 'n']:
+            answer = input("Seleccionar 'y' o 'n': ")
+        if answer == 'n':
+            break 
+    
+    almacenes[idAlmacen].addPedido(pedidoCounter, newPedido)
+    almacenes[idAlmacen].getPacientes()[idPaciente].addPedido(pedidoCounter, newPedido)
+    
+    
+
+def nuevoFarmaco():
+    """ Crea y devuelve un nuevo farmaco """
+    
+    nombreFarmaco = input ("\nNombre del farmaco: ")    
+    while True:
+        try:
+            pesoFarmaco = int(input("Peso del farmaco: "))
+            unidadesFarmaco = int(input("Unidades del farmaco: "))
+            break
+        except ValueError:
+            print("Error en la entrada, introduzca valores validos")
+    
+    return Farmaco(nombreFarmaco, pesoFarmaco, unidadesFarmaco)     
+        
+
+def listaDiariaPedidos():
+    """ Dado un almacen y una fecha, muestra los pedidos programados """
+    
+    print("\n---------- Lista diaria de pedidos ----------")  
+    
+    while True:
+        try:
+            idAlmacen = int(input("\nIdentificador de almacen (1 - 5): "))
+            if idAlmacen not in range(1,6) or almacenes[idAlmacen] == None:
+                print("Ese almacen no existe, intentelo de nuevo")
+                continue              
+            dia = int(input("Seleccione el dia: "))
+            mes = int(input("Seleccione el mes: "))
+            anio = int(input("Seleccione el anio: "))
+            fecha = datetime.date(anio,mes,dia)           
+            break
+        except ValueError:
+            print("Error en la entrada, introduzca valores validos")
+    
+    hayPedidos = False
+    for pedido in almacenes[idAlmacen].getPedidos().values():
+        if pedido.getFecha() == fecha:
+            hayPedidos = True
+            pedido.mostrarInfo()
+        
+    if not hayPedidos:
+        print("\nNo se han encontrado pedidos para el almacen y fecha indicados")
+
+def programarRutas():
+    pass
+    
+    
 funDict = {
     
     'E' : insertarDatos,
@@ -161,6 +266,9 @@ funDict = {
     'I' : displayAlmacenes,
     'A' : altaPaciente,
     'U' : displayPacientes,
+    'N' : nuevoPedido,
+    'L' : listaDiariaPedidos,
+    'P' : programarRutas,
     
     }  
 

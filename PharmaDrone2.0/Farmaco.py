@@ -12,6 +12,6 @@ class Farmaco:
         self.unidades = unidades
     
     def mostrarInfo(self):
-        print(f'Farmaco {self.nombre}:\n - Peso: {self.peso}g\n - Unidades: {self.unidades}')
+        print(f'{self.nombre} - {self.peso} gramos, {self.unidades} unidades')
         
 
