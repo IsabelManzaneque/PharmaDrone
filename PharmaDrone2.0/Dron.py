@@ -7,8 +7,19 @@ Created on Tue Aug  6 16:49:14 2024
 
 class Dron:
     def __init__(self):
-        pass
+        self.cargaMaxima = 3
+        self.cargaActual = 0
+        
     
     def programarRutas(self, listaPedidos):
         pass
     
+    def getAutonomia(self):
+        # 20km sin repostar a plena carga, 25km en vacio
+        if self.cargaActual == 0:
+            return 25 
+        else:
+            pass
+        
+    def getCargaActual(self):
+        return self.cargaActual
