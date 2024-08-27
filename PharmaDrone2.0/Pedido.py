@@ -29,7 +29,7 @@ class Pedido:
         except ValueError:
             raise ValueError("El dia, mes y anio del pedido deben ser numeros enteros")
         
-        fecha = datetime.date(dia,mes,anio)
+        fecha = datetime.date(anio,mes,dia)
         if fecha < datetime.datetime.today().date():
             raise ValueError("Error! Introduzca una fecha de envio futura.")
           

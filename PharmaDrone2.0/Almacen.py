@@ -10,9 +10,16 @@ from Dron import Dron
 class Almacen:
     
     
-    def __init__(self, idAlmacen, direccion, municipio, provincia, descripcion):        
+    def __init__(self, idAlmacen, direccion, municipio, provincia, descripcion):  
+        
+        try:
+            idAlmacen = int(idAlmacen)
+            if not(0 < idAlmacen < 6):
+                raise ValueError
+        except ValueError:
+            raise ValueError("El identificador de almacen debe ser un numero del 1 al 5")
            
-        self.idAlmacen = Almacen.checkIdAlmacen(idAlmacen)      
+        self.idAlmacen = idAlmacen      
         self.direccion = direccion
         self.municipio = municipio
         self.provincia = provincia

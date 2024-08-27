@@ -24,6 +24,21 @@ def insertarDatos():
     almacenes[1].addPaciente(Paciente.getCounter(), Paciente("Isabel", 3000, 45))
     Paciente.increaseCounter()
     
+def getIdAlmacen():    
+    while True:         
+        idAlmacen = input("\nIdentificador de almacen (1 - 5): ")
+        try:
+            idAlmacen = int(idAlmacen)
+            if not(0 < idAlmacen < 6):
+                raise ValueError("El identificador de almacen debe ser un numero del 1 al 5")
+            if almacenes[idAlmacen] is None:
+                print(f"No existe almacen con identificador {idAlmacen}, introduzca otro")
+                continue
+            return idAlmacen  
+        except ValueError:
+            ("El identificador de almacen debe ser un numero del 1 al 5")     
+            
+    
 def altaAlmacen():
     """
     Da de alta un nuevo almacen. Si todos los almacenes estan ocupados, se debera
@@ -47,13 +62,16 @@ def altaAlmacen():
         print("\n---------- Alta nuevo almacen ----------")  
         
         while True:    
-            while True:    
-                idAlmacen = input("\nIdentificador del almacen: ")                
-                if (not todosOcupados and almacenes[int(idAlmacen)] is None) or todosOcupados:   
-                    break                    
-                if not todosOcupados and almacenes[int(idAlmacen)] is not None:
-                    print(f"El almacen {idAlmacen} ya está siendo utilizado. Elegir otro")
-                     
+            while True:         
+                try:
+                    idAlmacen = Almacen.checkIdAlmacen(input("\nIdentificador de almacen (1 - 5): "))
+                    if (not todosOcupados and almacenes[int(idAlmacen)] is None) or todosOcupados:   
+                        break                    
+                    if not todosOcupados and almacenes[int(idAlmacen)] is not None:
+                        print(f"El almacen {idAlmacen} ya está siendo utilizado. Elegir otro")
+                except ValueError as e:
+                    print(e)
+                    
             dirAlmacen = input("Direccion de almacen: ")
             munAlmacen = input("Municipio almacen: ")
             provAlmacen = input("Provincia almacen: ")
@@ -96,16 +114,8 @@ def altaPaciente():
     
     while True:
         print("\n---------- Alta nuevo paciente ----------")      
-        while True:  
-                       
-            try:
-                idAlmacen = int(input("\nIdentificador de almacen (1 - 5): "))
-                if not (0<idAlmacen<6):
-                    raise ValueError            
-            except ValueError:
-                print("El identificador de almacen debe ser un numero entre 1 y 5") 
-                continue
-            
+        while True:               
+            idAlmacen = getIdAlmacen()
             nombrePaciente = input("Nombre del paciente: ")
             distanciaPaciente = input("Distancia (hasta 10000 metros a plena carga): ")
             anguloPaciente = input("Angulo (entre 0 y 2000 milesimas de pi radianes): ")                                 
@@ -134,13 +144,7 @@ def displayPacientes():
     """ Muestra la informacion de de los pacientes dados de alta en un almacen"""
     
     print("\n---------- Informacion pacientes ----------")  
-    while True:
-        try:
-            idAlmacen = Almacen.checkIdAlmacen(input("\nIdentificador de almacen (1 - 5): "))            
-            break
-        except ValueError as e:
-            print(e)                   
-       
+    idAlmacen = getIdAlmacen()        
     for paciente in almacenes[idAlmacen].getPacientes().values():
         paciente.mostrarInfo()
             
@@ -149,13 +153,7 @@ def nuevoPedido():
     """ Procesa un nuevo pedido para un cliente en un almacen """
         
     print("\n---------- Nuevo pedido ----------")  
-    while True:
-        try:
-            idAlmacen = Almacen.checkIdAlmacen(input("\nIdentificador de almacen (1 - 5): "))            
-            break
-        except ValueError as e:
-            print(e)    
-        
+    idAlmacen = getIdAlmacen()      
     for paciente in almacenes[idAlmacen].getPacientes().values():        
         paciente.mostrarInfo()    
        
@@ -194,22 +192,20 @@ def nuevoPedido():
             break 
     
     almacenes[idAlmacen].addPedido(Pedido.getCounter(), newPedido)
-    almacenes[idAlmacen].getPacientes()[idPaciente].addPedido(Pedido.getCounter(), newPedido)    
+    almacenes[idAlmacen].getPacientes()[int(idPaciente)].addPedido(Pedido.getCounter(), newPedido)    
     
 
 def listaDiariaPedidos():
     """ Dado un almacen y una fecha, muestra los pedidos programados """
     
     print("\n---------- Lista diaria de pedidos ----------")     
-    while True: 
-        
+    while True:         
         try: 
-            idAlmacen = int(input("\nIdentificador de almacen (1 - 5): "))
+            idAlmacen = getIdAlmacen()      
             dia = int(input("Seleccione el dia: "))
             mes = int(input("Seleccione el mes: "))
             anio = int(input("Seleccione el anio: "))
-            fecha = datetime.date(anio,mes,dia)
-            break
+            fecha = datetime.date(anio,mes,dia)            
         except ValueError:
             print("Error en la entrada")        
                         
@@ -226,16 +222,11 @@ def programarRutas():
     
     print("\n---------- Programar rutas diarias del dron ----------")            
     while True:        
-        idAlmacen = int(input("\nIdentificador de almacen (1 - 5): "))
+        idAlmacen = getIdAlmacen()      
         dia = int(input("Seleccione el dia: "))
         mes = int(input("Seleccione el mes: "))
         anio = int(input("Seleccione el anio: "))             
-        fecha = datetime.date(anio, mes, dia)
-        
-        if almacenes[int(idAlmacen)] == None:
-            print("Ese almacen no existe, intentelo de nuevo")
-            continue        
-        break                   
+        fecha = datetime.date(anio, mes, dia)                     
     
     listaPedidos = []
     if not almacenes[idAlmacen].getPedidos():
