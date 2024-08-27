@@ -40,7 +40,8 @@ class Pedido:
         self.diasEntreEnvio = 0
         self.fecha = fecha
         self.getDiasEntreEnvio()        
-        self.farmacos = []       
+        self.farmacos = []      
+        self.increaseCounter()
         
     @staticmethod
     def increaseCounter():

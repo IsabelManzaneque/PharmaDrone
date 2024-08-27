@@ -19,10 +19,8 @@ def insertarDatos():
         
     almacenes[1] = Almacen(1, "Villanueva 14", "Zarzaquemada", "Madrid", "Entrada sur")
     almacenes[3] = Almacen(3, "3 Tintern Street", "Clapham", "London", "Almacen de Reino Unido")
-    almacenes[5] = Almacen(5, "Chile 17", "Leganes", "Madrid", "Entrada norte")     
-    
+    almacenes[5] = Almacen(5, "Chile 17", "Leganes", "Madrid", "Entrada norte")         
     almacenes[1].addPaciente(Paciente.getCounter(), Paciente("Isabel", 3000, 45))
-    Paciente.increaseCounter()
     
 def getIdAlmacen():    
     while True:         
@@ -128,7 +126,6 @@ def altaPaciente():
                 try:
                     newPaciente = Paciente(nombrePaciente, distanciaPaciente, anguloPaciente)
                     almacenes[idAlmacen].addPaciente(Paciente.getCounter(), newPaciente) 
-                    Paciente.increaseCounter()
                     break
                 except ValueError as e:
                     print(e)                
@@ -167,7 +164,6 @@ def nuevoPedido():
         try:
             if int(idPaciente) in almacenes[idAlmacen].getPacientes().keys():
                 newPedido = Pedido(idPaciente,numEnvios,diaEnvio,mesEnvio,anioEnvio)
-                Pedido.increaseCounter()
                 break
             else:
                 print("No existe un paciente con el identificador seleccionado")

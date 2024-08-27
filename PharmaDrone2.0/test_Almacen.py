@@ -7,7 +7,6 @@ Created on Fri Aug  9 16:13:57 2024
 
 import unittest
 import coverage
-import datetime
 from Almacen import Almacen
 from Paciente import Paciente
 from Pedido import Pedido
@@ -44,13 +43,15 @@ class TestAlmacen(unittest.TestCase):
         self.assertIsInstance(testAmlacen.pedidos, dict)
         self.assertIsInstance(testAmlacen.dron, Dron)
         
-    def test_init_failure_noNumId(self):        
-        with self.assertRaises(ValueError):
-            testAlmacen = Almacen("testId", "testDir", "testMun", "testPro", "testDesc")
-    
-    def test_init_failure_idNotIn1to5(self):
-        with self.assertRaises(ValueError):
-            testAlmacen = Almacen(0, "testDir", "testMun", "testPro", "testDesc")           
+    def test_init_failure(self):        
+        almacenParams = [
+            ("testId", "testDir", "testMun", "testPro", "testDesc"),
+            (0, "testDir", "testMun", "testPro", "testDesc")
+        ]
+        
+        for params in almacenParams:
+            with self.assertRaises(ValueError):
+                Almacen(*params)                
    
     def test_addPaciente(self):
         newPaciente = Paciente("name", 2, 2)        
@@ -59,11 +60,10 @@ class TestAlmacen(unittest.TestCase):
         self.assertEqual(pacientes[1], newPaciente)
         
     def test_addPedido(self):
-        newPedidoId = 1
         newPedido = Pedido(1,1,1,3,2025)      
-        self.newAlmacen.addPedido(newPedidoId, newPedido)
+        self.newAlmacen.addPedido(1, newPedido)
         pedidos = self.newAlmacen.getPedidos()
-        self.assertEqual(pedidos[newPedidoId], newPedido)
+        self.assertEqual(pedidos[1], newPedido)
         
     def test_getId(self):        
         self.assertIsInstance(self.newAlmacen.getId(), int)

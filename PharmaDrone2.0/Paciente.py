@@ -30,6 +30,7 @@ class Paciente:
         self.distancia = distancia
         self.angulo = angulo
         self.pedidos = {} # pedidos del paciente
+        self.increaseCounter()
         
     @staticmethod
     def increaseCounter():

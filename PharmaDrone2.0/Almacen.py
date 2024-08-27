@@ -36,8 +36,7 @@ class Almacen:
                 raise ValueError
             return idAlmacen
         except ValueError:
-            raise ValueError("El identificador de almacen debe ser un numero del 1 al 5")
-            
+            raise ValueError("El identificador de almacen debe ser un numero del 1 al 5")            
         
     def addPaciente(self, idPaciente, paciente):
         self.pacientes[idPaciente] = paciente
